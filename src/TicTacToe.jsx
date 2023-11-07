@@ -22,77 +22,50 @@ const TicTacToe = () => {
   const boxArray = [box1, box2, box3, box4, box5, box6, box7, box8, box9];
 
   const checkWin = (data) => {
-        if (data[0]===data[1] && data[1] === data[2] && data[2]!=="")
-    {
-      winner(data[2]);
-    }
-    else if (data[3]===data[4] && data[4] === data[5] && data[5]!=="")
-    {
-      winner(data[5]);
-    }
-    else if (data[6]===data[7] && data[7] === data[8] && data[8]!=="")
-    {
-      winner(data[8]);
-    }
-    else if (data[0]===data[3] && data[3] === data[6] && data[6]!=="")
-    {
-      winner(data[6]);
-    }
-    else if (data[1]===data[4] && data[4] === data[7] && data[7]!=="")
-    {
-      winner(data[7]);
-    }
-    else if (data[2]===data[5] && data[5] === data[8] && data[8]!=="")
-    {
-      winner(data[8]);
-    }
-    else if (data[0]===data[4] && data[4] === data[8] && data[8]!=="")
-    {
-      winner(data[8]);
-    }
-    else if (data[0]===data[1] && data[1] === data[2] && data[2]!=="")
-    {
-      winner(data[2]);
-    }
-    else if (data[2]===data[4] && data[4] === data[6] && data[6]!=="")
-    {
-      winner(data[6]);
+    const winningCombinations = [
+      [0, 1, 2],
+      [3, 4, 5],
+      [6, 7, 8],
+      [0, 3, 6],
+      [1, 4, 7],
+      [2, 5, 8],
+      [0, 4, 8],
+      [2, 4, 6],
+    ];
+  
+    for (const [a, b, c] of winningCombinations) {
+      if (data[a] === data[b] && data[b] === data[c] && data[a] !== "") {
+        winner(data[a]);
+        return;
+      }
     }
   };
 
   const winner = (win) => {
     setLock(true);
-    if (win === "x") {
-      titleRef.current.innerHTML = `Congratulations: <img src=${CrossIcon}>`;
-    } else {
-      titleRef.current.innerHTML = `Congratulations: <img src=${CircleIcon}>`;
-    }
+    titleRef.current.innerHTML = `Congratulations: <img src=${win === "x" ? CrossIcon : CircleIcon}>`;
   };
+  
 
   const toggle = (e, num) => {
-    if (lock) {
-      return;
-    }
-    if (count % 2 === 0) {
-      e.target.innerHTML = `<img src='${CrossIcon}'>`;
-      data[num] = "x";
-      setCount(count + 1);
-    } else {
-      e.target.innerHTML = `<img src='${CircleIcon}'>`;
-      data[num] = "o";
-      setCount(count + 1);
-    }
+    if (lock) return;
+    
+    const icon = count % 2 === 0 ? CrossIcon : CircleIcon;
+    e.target.innerHTML = `<img src='${icon}'>`;
+    data[num] = count % 2 === 0 ? "x" : "o";
+    setCount(count + 1);
     checkWin(data);
   };
-
+  
   const reset = () => {
     setLock(false);
-    setData(["", "", "", "", "", "", "", "", ""]);
+    setData(Array(9).fill(""));
     titleRef.current.innerHTML = 'Tic-Tac-Toe';
-    boxArray.map((e) => {
+    boxArray.forEach((e) => {
       e.current.innerHTML = "";
     });
   };
+  
 
   return (
     <div className="container">
