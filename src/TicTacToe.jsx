@@ -1,7 +1,7 @@
 import React, { useRef, useState } from "react";
 import './TicTacToe.css';
-import CircleIcon from "./assets/circle.png";
-import CrossIcon from "./assets/cross.png";
+import CircleIcon from "./assets/button.png";
+import CrossIcon from "./assets/cancel.png";
 
 const TicTacToe = () => {
   const [count, setCount] = useState(0);
